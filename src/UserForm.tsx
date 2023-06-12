@@ -71,12 +71,27 @@ const UserForm: FC = () => {
   setErrors({})
   }
 
+  const stateList = [
+    'First Name',
+    'Last Name',
+    'Email',
+    'Age',
+    // Add more states as needed
+  ];
+
+
+   const [selectedState, setSelectedState] = useState('');
+
+   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+     setSelectedState(event.target.value);
+   };
+
   return (
     <div style={{margin: '2em'}}>
       <form onSubmit={handleOnSubmit} style={{maxWidth: '50em'}}>
         <Typography variant='h5' style={{letterSpacing: '0.1em'}}>USER FORM</Typography>
         <TextField label='First Name' name='firstName' value={formData.firstName}
-        onChange={handleOnChange} error={!!errors.firstName} helperText={errors.firstName}
+        onChange={handleOnChange} error={!!errors.firstName} helperText={errors.firstName || 'Enter your first name'}
         fullWidth margin='normal' inputProps={{maxlength: 50}} size='small'/>
 
         <TextField label='Last Name' name='lastName' value={formData.lastName}
@@ -90,6 +105,18 @@ const UserForm: FC = () => {
         <TextField label='Age' name='age' value={formData.age} type='number'
         onChange={handleOnChange} error={!!errors.age} helperText={errors.age}
         fullWidth margin='normal' inputProps={{maxlength: 3}} size='small'/>
+
+        <select style={{margin:20}} id="state" value={selectedState} onChange={handleSelectChange}>
+          <option value=" ">Select a state</option>
+            {stateList.map((state) => (
+              <option key={state} value={state}>
+                {state}
+            </option>
+          ))}
+        </select>
+
+        <p>Selected State: {selectedState}</p>
+
 
         <Grid container direction='row' spacing={4}>
           <Grid item>

@@ -6,7 +6,7 @@ const Cards:FC = () => {
     <div style={{margin: 20}}>
       <Grid container spacing={2} direction='row'>
         <Grid item>
-           <Card variant='outlined'>
+           <Card variant='outlined' style={{width: '15em'}}>
               <CardContent>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                     Check User Form
@@ -19,7 +19,17 @@ const Cards:FC = () => {
 
         </Grid>
         <Grid item>
-          <div>second item</div>
+
+            <Card variant='outlined' style={{width: '15em'}}>
+              <CardContent>
+                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                  Check existing users
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" variant='outlined' href='/user-table'>Go to form</Button>
+              </CardActions>
+            </Card>
         </Grid>
       </Grid>
     </div>

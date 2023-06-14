@@ -1,6 +1,8 @@
 import React, {FC, useState, FormEvent, ChangeEvent} from 'react'
 import {TextField, Grid, Button, Typography} from '@mui/material';
-
+import axios from 'axios'
+import DialogComponent from './Dialog'
+import {DialogContext} from './DialogContext'
 
 interface FormData {
   firstName: string
@@ -22,6 +24,8 @@ const UserForm: FC = () => {
   const formErrors: Partial<FormData> = {}
   const [errors, setErrors] = useState<Partial<FormData>>({})
   const emailRegex = /^[a-zA-Z0-9.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+  const [show, setShow] = useState<boolean>(false)
+  const [success, setSuccess] = useState<boolean>(false)
 
   const handleOnSubmit = (event: FormEvent<HTMLFormElement>) =>{
     event.preventDefault()
@@ -52,7 +56,50 @@ const UserForm: FC = () => {
       setErrors(formErrors)
       return
     }
-  }
+
+    const payload = {
+        'first-name': formData.firstName,
+        'last-name': formData.lastName,
+        'age': formData.age,
+        'email': formData.email
+    }
+
+    console.log(JSON.stringify(payload, null, 2))
+
+
+    console.log(formData)
+
+    axios.post('http://localhost:8080/users',JSON.stringify(payload), {
+    headers:{
+      'Content-Type': 'application/json'
+      }
+    }).then(response => {
+        console.log(response.data)
+        if(response.status === 201){
+          setSuccess(true)
+          setShow(true)
+        }else{
+          handleOnError()
+        }
+        }).catch(error => {
+            console.error(error)
+            handleOnError()
+        })
+//     axios.get('http://localhost:8080/spring-boot')
+//       .then(response =>{
+//         console.log(response)
+//         if(response.status === 200){
+//           setSuccess(true)
+//           setShow(true)
+//         }else{
+//           handleOnError()
+//         }
+//
+//         }).catch(error => {
+//           console.log(error)
+//           })
+
+}
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) =>{
     const {name, value} = event.target
@@ -70,6 +117,13 @@ const UserForm: FC = () => {
   setFormData(initialValues)
   setErrors({})
   }
+
+  const handleOnError = () => {
+  setShow(true)
+  setSuccess(false)
+  }
+
+  const value = {show, setShow, success, setSuccess}
 
   const stateList = [
     'First Name',
@@ -90,21 +144,28 @@ const UserForm: FC = () => {
     <div style={{margin: '2em'}}>
       <form onSubmit={handleOnSubmit} style={{maxWidth: '50em'}}>
         <Typography variant='h5' style={{letterSpacing: '0.1em'}}>USER FORM</Typography>
+
+        {show && <DialogContext.Provider value = {value}>
+          <DialogComponent/>
+        </DialogContext.Provider>
+
+        }
+
         <TextField label='First Name' name='firstName' value={formData.firstName}
         onChange={handleOnChange} error={!!errors.firstName} helperText={errors.firstName || 'Enter your first name'}
-        fullWidth margin='normal' inputProps={{maxlength: 50}} size='small'/>
+        fullWidth margin='normal' inputProps={{maxLength: 50}} size='small'/>
 
         <TextField label='Last Name' name='lastName' value={formData.lastName}
         onChange={handleOnChange} error={!!errors.lastName} helperText={errors.lastName}
-        fullWidth margin='normal' inputProps={{maxlength: 50}} size='small'/>
+        fullWidth margin='normal' inputProps={{maxLength: 50}} size='small'/>
 
         <TextField label='Email' name='email' value={formData.email}
         onChange={handleOnChange} error={!!errors.email} helperText={errors.email}
-        fullWidth margin='normal' inputProps={{maxlength: 50}} size='small'/>
+        fullWidth margin='normal' inputProps={{maxLength: 50}} size='small'/>
 
         <TextField label='Age' name='age' value={formData.age} type='number'
         onChange={handleOnChange} error={!!errors.age} helperText={errors.age}
-        fullWidth margin='normal' inputProps={{maxlength: 3}} size='small'/>
+        fullWidth margin='normal' inputProps={{maxLength: 3}} size='small'/>
 
         <select style={{margin:20}} id="state" value={selectedState} onChange={handleSelectChange}>
           <option value=" ">Select a state</option>

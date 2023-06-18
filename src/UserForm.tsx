@@ -1,5 +1,5 @@
 import React, {FC, useState, FormEvent, ChangeEvent} from 'react'
-import {TextField, Grid, Button, Typography} from '@mui/material';
+import {TextField, Grid, Button, Typography, FormControl, InputLabel, MenuItem,Select, SelectChangeEvent} from '@mui/material';
 import axios from 'axios'
 import DialogComponent from './Dialog'
 import {DialogContext} from './DialogContext'
@@ -9,13 +9,29 @@ interface FormData {
   lastName: string
   email: string
   age: number | string
+  state: string
+  state1: {
+    prop1: string
+    prop2: string
+    prop3: string
+  }
+
+
 }
+
+//another property of form data interface....ten states type string,implement validations for them
 
 const initialValues: FormData = {
   firstName: '',
   lastName: '',
   email: '',
-  age: 0
+  age: 0,
+  state: 'Aadhaar',
+  state1: {
+    prop1: '',
+    prop2: '',
+    prop3: ''
+  }
 }
 
 const UserForm: FC = () => {
@@ -26,6 +42,8 @@ const UserForm: FC = () => {
   const emailRegex = /^[a-zA-Z0-9.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
   const [show, setShow] = useState<boolean>(false)
   const [success, setSuccess] = useState<boolean>(false)
+    const [state, setState] = useState<string>('');
+
 
   const handleOnSubmit = (event: FormEvent<HTMLFormElement>) =>{
     event.preventDefault()
@@ -49,6 +67,10 @@ const UserForm: FC = () => {
     }else if(formData.age > 150){
       formErrors.age = ' age cannot be more than 150'
     }
+    if(!formData.state.trim()){
+      formErrors.state = 'state cannot be 0'
+    }else if(formData.state.length > 12)
+      formErrors.state = 'state cannot be more than 12 numbers'
 
 
 
@@ -61,7 +83,8 @@ const UserForm: FC = () => {
         'first-name': formData.firstName,
         'last-name': formData.lastName,
         'age': formData.age,
-        'email': formData.email
+        'email': formData.email,
+        'state': formData.state
     }
 
     console.log(JSON.stringify(payload, null, 2))
@@ -123,6 +146,10 @@ const UserForm: FC = () => {
   setSuccess(false)
   }
 
+  const handleChange = (event: SelectChangeEvent) => {
+      setState(event.target.value as string);
+    };
+
   const value = {show, setShow, success, setSuccess}
 
   const stateList = [
@@ -130,8 +157,10 @@ const UserForm: FC = () => {
     'Last Name',
     'Email',
     'Age',
-    // Add more states as needed
+    'Aadhaar'
   ];
+
+
 
 
    const [selectedState, setSelectedState] = useState('');
@@ -148,8 +177,8 @@ const UserForm: FC = () => {
         {show && <DialogContext.Provider value = {value}>
           <DialogComponent/>
         </DialogContext.Provider>
-
         }
+
 
         <TextField label='First Name' name='firstName' value={formData.firstName}
         onChange={handleOnChange} error={!!errors.firstName} helperText={errors.firstName || 'Enter your first name'}
@@ -167,16 +196,45 @@ const UserForm: FC = () => {
         onChange={handleOnChange} error={!!errors.age} helperText={errors.age}
         fullWidth margin='normal' inputProps={{maxLength: 3}} size='small'/>
 
-        <select style={{margin:20}} id="state" value={selectedState} onChange={handleSelectChange}>
-          <option value=" ">Select a state</option>
-            {stateList.map((state) => (
-              <option key={state} value={state}>
-                {state}
-            </option>
-          ))}
-        </select>
+        <TextField label='Aadhaar' name='Aadhaar' value={formData.state} type='number'
+        onChange={handleOnChange} error={!!errors.state} helperText={errors.state}
+        fullWidth margin='normal' inputProps={{maxLength: 12}} size='small'/>
 
-        <p>Selected State: {selectedState}</p>
+        <TextField label='prop1' name='prop1' value={formData.state1.prop1 ?? ''}
+        onChange={handleOnChange} error={!!errors.state1?.prop1} helperText={errors.state1?.prop1}
+        fullWidth margin='normal' inputProps={{maxLength: 50}} size='small'/>
+
+
+         <label>Selected State: {selectedState}
+
+         <select style={{margin:20}} id="state" value={selectedState} onChange={handleSelectChange}>
+           <option value=" ">Select a state</option>
+             {stateList.map((state) => (
+               <option key={state} value={state}>
+                 {state}
+             </option>
+          ))}
+         </select></label>
+
+        <FormControl fullWidth>
+          <InputLabel>State</InputLabel>
+            <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={formData.state}
+                  label="state"
+                  onChange={handleChange} >
+                  <MenuItem value=" "> </MenuItem>
+                    {stateList.map((state) => (
+                      <MenuItem key={state} value={state}>
+                        {state}
+                      </MenuItem>
+                    ))}
+            </Select>
+        </FormControl>
+
+
+
 
 
         <Grid container direction='row' spacing={4}>

@@ -10,7 +10,7 @@ interface FormData {
   email: string
   age: number | string
   state: string
-  state1: {
+  state1:{
     prop1: string
     prop2: string
     prop3: string
@@ -19,6 +19,7 @@ interface FormData {
 
 }
 
+
 //another property of form data interface....ten states type string,implement validations for them
 
 const initialValues: FormData = {
@@ -26,7 +27,7 @@ const initialValues: FormData = {
   lastName: '',
   email: '',
   age: 0,
-  state: 'Aadhaar',
+  state: '',
   state1: {
     prop1: '',
     prop2: '',
@@ -71,6 +72,10 @@ const UserForm: FC = () => {
       formErrors.state = 'state cannot be 0'
     }else if(formData.state.length > 12)
       formErrors.state = 'state cannot be more than 12 numbers'
+//     if(!formData.state1?.prop1.trim()){
+//       formErrors.state1.prop1 = 'state1 is required'
+//     }else if(formData.state1.prop1.length > 50){
+//       formErrors.state1.prop1 = 'state1 cannot be more than 50'
 
 
 
@@ -196,9 +201,9 @@ const UserForm: FC = () => {
         onChange={handleOnChange} error={!!errors.age} helperText={errors.age}
         fullWidth margin='normal' inputProps={{maxLength: 3}} size='small'/>
 
-        <TextField label='Aadhaar' name='Aadhaar' value={formData.state} type='number'
+        <TextField label='Aadhaar' name='Aadhaar' value={formData.state}
         onChange={handleOnChange} error={!!errors.state} helperText={errors.state}
-        fullWidth margin='normal' inputProps={{maxLength: 12}} size='small'/>
+        fullWidth margin='normal' inputProps={{maxLength: 50}} size='small'/>
 
         <TextField label='prop1' name='prop1' value={formData.state1.prop1 ?? ''}
         onChange={handleOnChange} error={!!errors.state1?.prop1} helperText={errors.state1?.prop1}

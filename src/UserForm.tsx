@@ -10,11 +10,11 @@ interface FormData {
   email: string
   age: number | string
   state: string
-  state1:{
-    prop1: string
-    prop2: string
-    prop3: string
-  }
+//   state1:{
+//     prop1: string
+//     prop2: string
+//     prop3: string
+//   }
 
 
 }
@@ -28,14 +28,18 @@ const initialValues: FormData = {
   email: '',
   age: 0,
   state: '',
-  state1: {
-    prop1: '',
-    prop2: '',
-    prop3: ''
-  }
+//   state1: {
+//     prop1: '',
+//     prop2: '',
+//     prop3: ''
+//   }
 }
 
-const UserForm: FC = () => {
+interface UserProps{
+  URL : string
+}
+
+const UserForm: FC<UserProps> = (props) => {
 
   const [formData, setFormData] = useState<FormData>(initialValues)
   const formErrors: Partial<FormData> = {}
@@ -43,7 +47,7 @@ const UserForm: FC = () => {
   const emailRegex = /^[a-zA-Z0-9.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
   const [show, setShow] = useState<boolean>(false)
   const [success, setSuccess] = useState<boolean>(false)
-    const [state, setState] = useState<string>('');
+  const [state, setState] = useState<string>('');
 
 
   const handleOnSubmit = (event: FormEvent<HTMLFormElement>) =>{
@@ -68,10 +72,10 @@ const UserForm: FC = () => {
     }else if(formData.age > 150){
       formErrors.age = ' age cannot be more than 150'
     }
-    if(!formData.state.trim()){
-      formErrors.state = 'state cannot be 0'
-    }else if(formData.state.length > 12)
-      formErrors.state = 'state cannot be more than 12 numbers'
+//     if(!formData.state.trim()){
+//       formErrors.state = 'state cannot be 0'
+//     }else if(formData.state.length > 12)
+//       formErrors.state = 'state cannot be more than 12 numbers'
 //     if(!formData.state1?.prop1.trim()){
 //       formErrors.state1.prop1 = 'state1 is required'
 //     }else if(formData.state1.prop1.length > 50){
@@ -89,7 +93,7 @@ const UserForm: FC = () => {
         'last-name': formData.lastName,
         'age': formData.age,
         'email': formData.email,
-        'state': formData.state
+//         'state': formData.state
     }
 
     console.log(JSON.stringify(payload, null, 2))
@@ -97,7 +101,7 @@ const UserForm: FC = () => {
 
     console.log(formData)
 
-    axios.post('http://localhost:8080/users',JSON.stringify(payload), {
+    axios.post(props.URL,JSON.stringify(payload), {
     headers:{
       'Content-Type': 'application/json'
       }
@@ -141,6 +145,18 @@ const UserForm: FC = () => {
     }))
   }
 
+  const handleSelectOnChange = (event: SelectChangeEvent) =>{
+      const {name, value} = event.target
+      setFormData((prevFormData: FormData) => ({
+        ...prevFormData,
+        [name]: value
+      }))
+      setErrors((prevErrors: Partial<FormData>) => ({
+        ...prevErrors,
+        [name]: ''
+      }))
+  }
+
   const clearForm = () => {
   setFormData(initialValues)
   setErrors({})
@@ -174,8 +190,10 @@ const UserForm: FC = () => {
      setSelectedState(event.target.value);
    };
 
+//   console.log(formData.state)
   return (
     <div style={{margin: '2em'}}>
+
       <form onSubmit={handleOnSubmit} style={{maxWidth: '50em'}}>
         <Typography variant='h5' style={{letterSpacing: '0.1em'}}>USER FORM</Typography>
 
@@ -201,34 +219,35 @@ const UserForm: FC = () => {
         onChange={handleOnChange} error={!!errors.age} helperText={errors.age}
         fullWidth margin='normal' inputProps={{maxLength: 3}} size='small'/>
 
-        <TextField label='Aadhaar' name='Aadhaar' value={formData.state}
-        onChange={handleOnChange} error={!!errors.state} helperText={errors.state}
-        fullWidth margin='normal' inputProps={{maxLength: 50}} size='small'/>
+         {/*<TextField label='Aadhaar' name='Aadhaar' value={formData.state}
+//         onChange={handleOnChange} error={!!errors.state} helperText={errors.state}
+//         fullWidth margin='normal' inputProps={{maxLength: 50}} size='small'/>
+//
+//         <TextField label='prop1' name='prop1' value={formData.state1.prop1 ?? ''}
+//         onChange={handleOnChange} error={!!errors.state1?.prop1} helperText={errors.state1?.prop1}
+//         fullWidth margin='normal' inputProps={{maxLength: 50}} size='small'/>
 
-        <TextField label='prop1' name='prop1' value={formData.state1.prop1 ?? ''}
-        onChange={handleOnChange} error={!!errors.state1?.prop1} helperText={errors.state1?.prop1}
-        fullWidth margin='normal' inputProps={{maxLength: 50}} size='small'/>
 
-
-         <label>Selected State: {selectedState}
-
-         <select style={{margin:20}} id="state" value={selectedState} onChange={handleSelectChange}>
-           <option value=" ">Select a state</option>
-             {stateList.map((state) => (
-               <option key={state} value={state}>
-                 {state}
-             </option>
-          ))}
-         </select></label>
+//          <label>Selected State: {selectedState}
+//
+//          <select style={{margin:20}} id="state" value={selectedState} onChange={handleSelectChange}>
+//            <option value=" ">Select a state</option>
+//              {stateList.map((state) => (
+//                <option key={state} value={state}>
+//                  {state}
+//              </option>
+//           ))}
+//          </select></label>*/}
 
         <FormControl fullWidth>
           <InputLabel>State</InputLabel>
             <Select
+                  name = "state"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={formData.state}
                   label="state"
-                  onChange={handleChange} >
+                  onChange={handleSelectOnChange} >
                   <MenuItem value=" "> </MenuItem>
                     {stateList.map((state) => (
                       <MenuItem key={state} value={state}>

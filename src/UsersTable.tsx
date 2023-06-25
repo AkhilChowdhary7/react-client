@@ -9,7 +9,11 @@ interface User {
   age: number
 }
 
-const UsersTable : FC = () => {
+interface UserProps{
+  URL :string
+}
+
+const UsersTable : FC<UserProps> = (props) => {
   const [userData, setUserData] = useState<User[]>([])
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -36,7 +40,7 @@ const UsersTable : FC = () => {
 
   const getData = async () => {
     try{
-      const response = await axios.get('http://localhost:8080/users')
+      const response = await axios.get(props.URL)
       const mappedData: User[] = response.data.map((item:any) => ({
         firstName: item['first-name'],
         lastName: item['last-name'],

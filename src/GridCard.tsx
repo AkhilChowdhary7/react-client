@@ -1,16 +1,22 @@
 import React, {FC} from 'react';
-import {Button, Typography, useMediaQuery} from '@mui/material';
+import {Button, Grid, Typography, useMediaQuery} from '@mui/material';
 import{useTheme} from '@mui/material/styles'
 import {CustomCardContent, CustomCard} from './ComponentRepository'
 import GridCardForm from './GridCardForm'
 
-
+interface GridCardProps {
+  title : string,
+  content : string,
+  number : number
+}
 // export const CustomCardContent = styled(CardContent)({
 interface UserProps{
   URL : string
 }
+// const UserForm: FC<UserProps> = (props) => {
 
-const GridCard =  ({title , content, number }: { title: string; content: string; number: number }) => {
+const GridCard : FC<GridCardProps> = (props) => {
+// const GridCard =  ({title , content, number }: { title: string; content: string; number: number }) => {
 
 
 const theme = useTheme()
@@ -20,23 +26,24 @@ const theme = useTheme()
 
   return(
   <div>
-  <CustomCard>
-  <CustomCardContent>
-    <Typography sx={{ fontSize: 14 }}  color="red" gutterBottom>
-                        {title}
+    <CustomCard>
+    <CustomCardContent>
+    <Typography sx={{ fontSize : isMdScreen ? 20 : 10}}  color="red" gutterBottom>
+                        {props.title}
+    </Typography>
+
+    <Typography sx={{ fontSize: 14 }} color = {isMdScreen ? 'red' : 'orange'} gutterBottom>
+                        {props.content}
     </Typography>
 
     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                        {content}
+                        Number : {props.number}
     </Typography>
 
-    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                        Number : {number}
-    </Typography>
-    <div style={{marginBottom:'5em'}}/>
-{/*      <GridCardForm URL = "props.URL" /> */}
+    <div style={{marginBottom:'10em'}}/>
 
-  </CustomCardContent>
+
+    </CustomCardContent>
   </CustomCard>
   </div>
   )}

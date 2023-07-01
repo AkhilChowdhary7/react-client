@@ -13,10 +13,10 @@ const URL : string ='http://localhost:8080/users'
   return (
     <Router>
       <Routes>
-        <Route path = '/' element = {<Cards/>}/>
+        <Route path = '/' element = {<Cards URL ={URL}/>}/>
         <Route path='/user-form' element={<UserForm URL ={URL} />}/>
         <Route path='/user-table' element={<UsersTable URL ={URL}/>}/>
-        <Route path='/grid-card-form' element={<GridCardForm URL ={URL}/>}/>
+        <Route path='/grid-card-form' element={<GridCardForm/>}/>
       </Routes>
     </Router>
   );

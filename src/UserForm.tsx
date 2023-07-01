@@ -1,8 +1,11 @@
 import React, {FC, useState, FormEvent, ChangeEvent} from 'react'
-import {TextField, Grid, Button, Typography, FormControl, InputLabel, MenuItem,Select, SelectChangeEvent} from '@mui/material';
+import {AppBar,Box, CssBaseline, Divider, Drawer, IconButton,List, ListItem, ListItemButton, ListItemText, Toolbar,TextField, Grid, Button, Typography, FormControl, InputLabel, MenuItem,Select, SelectChangeEvent} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+
 import axios from 'axios'
 import DialogComponent from './Dialog'
 import {DialogContext} from './DialogContext'
+
 
 interface FormData {
   firstName: string
@@ -10,15 +13,17 @@ interface FormData {
   email: string
   age: number | string
   state: string
-//   state1:{
-//     prop1: string
-//     prop2: string
-//     prop3: string
-//   }
-
-
 }
 
+const drawerWidth = 240;
+const navItems = ['Home', 'Form','Table', 'Grid'];
+
+
+
+interface Props {
+  window ? : () =>  Window;
+  URL : string
+}
 
 //another property of form data interface....ten states type string,implement validations for them
 
@@ -36,6 +41,7 @@ const initialValues: FormData = {
 }
 
 interface UserProps{
+  window ? : () =>  Window;
   URL : string
 }
 
@@ -49,6 +55,12 @@ const UserForm: FC<UserProps> = (props) => {
   const [success, setSuccess] = useState<boolean>(false)
   const [state, setState] = useState<string>('');
 
+  const { window } = props;
+    const [mobileOpen, setMobileOpen] = React.useState(false);
+
+    const handleDrawerToggle = () => {
+      setMobileOpen((prevState) => !prevState);
+    };
 
   const handleOnSubmit = (event: FormEvent<HTMLFormElement>) =>{
     event.preventDefault()
@@ -72,15 +84,6 @@ const UserForm: FC<UserProps> = (props) => {
     }else if(formData.age > 150){
       formErrors.age = ' age cannot be more than 150'
     }
-//     if(!formData.state.trim()){
-//       formErrors.state = 'state cannot be 0'
-//     }else if(formData.state.length > 12)
-//       formErrors.state = 'state cannot be more than 12 numbers'
-//     if(!formData.state1?.prop1.trim()){
-//       formErrors.state1.prop1 = 'state1 is required'
-//     }else if(formData.state1.prop1.length > 50){
-//       formErrors.state1.prop1 = 'state1 cannot be more than 50'
-
 
 
     if(Object.keys(formErrors).length > 0) {
@@ -191,8 +194,90 @@ const UserForm: FC<UserProps> = (props) => {
    };
 
 //   console.log(formData.state)
+
+  const drawer = (
+       <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+            <Typography variant="h6" sx={{ my: 2 }}>
+              MUI
+            </Typography>
+            <Divider />
+            <List>
+            <ListItem sx={{ textAlign: 'center' }}>
+              <Button sx={{ textAlign: 'center' }} size='small'  href='/'>home</Button>
+            </ListItem>
+            <ListItem>
+              <Button sx={{ textAlign: 'center' }} size='small'  href='/user-form'>form</Button>
+            </ListItem>
+
+            <ListItem>
+              <Button size='small'  href='/user-table'>table</Button>
+            </ListItem>
+            <ListItem>
+              <Button size='small'  href='/grid-card-form'>Grid</Button>
+            </ListItem>
+            </List>
+       </Box>
+  );
+
+  const container = window !== undefined ? () => window().document.body : undefined;
+
+
   return (
-    <div style={{margin: '2em'}}>
+  <div style={{margin: '2em'}}>
+    <Box sx={{ display: 'flex' }}>
+           <CssBaseline />
+              <AppBar component="nav">
+                <Toolbar>
+                  <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    edge="start"
+                    onClick={handleDrawerToggle}
+                    sx={{ mr: 2, display: { sm: 'none' } }}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                  <Typography
+                              variant="h6"
+                              component="div"
+                              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                  >
+                  MUI
+                  </Typography>
+                  <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                     <Button sx={{ color: '#fff' }}  href='/' >Home</Button>
+                     <Button sx={{ color: '#fff' }}  href='/user-form' >Form</Button>
+                     <Button sx={{ color: '#fff' }}  href='/user-table' >Table</Button>
+                     <Button sx={{ color: '#fff' }}  href='/grid-card-form' >Grid</Button>
+
+  {/*                             {navItems.map((item) => ( */}
+  {/*                   <Button key={item} sx={{ color: '#fff' }}> */}
+  {/*                                 {item} */}
+  {/*                   </Button>
+                  ))}*/}
+                  </Box>
+                </Toolbar>
+              </AppBar>
+              <Box component="nav">
+                <Drawer
+                  container={container}
+                  variant="temporary"
+                  open={mobileOpen}
+                  onClose={handleDrawerToggle}
+                  ModalProps={{
+                  keepMounted: true, // Better open performance on mobile.
+                 }}
+                 sx={{
+                    display: { xs: 'block', sm: 'none' },
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                 }}
+                >
+                 {drawer}
+                </Drawer>
+              </Box>
+  </Box>
+
+
 
       <form onSubmit={handleOnSubmit} style={{maxWidth: '50em'}}>
         <Typography variant='h5' style={{letterSpacing: '0.1em'}}>USER FORM</Typography>
@@ -208,7 +293,7 @@ const UserForm: FC<UserProps> = (props) => {
         fullWidth margin='normal' inputProps={{maxLength: 50}} size='small'/>
 
         <TextField label='Last Name' name='lastName' value={formData.lastName}
-        onChange={handleOnChange} error={!!errors.lastName} helperText={errors.lastName}
+        onChange={handleOnChange} error={!!errors.lastName} helperText={errors.lastName || 'Enter your last name'}
         fullWidth margin='normal' inputProps={{maxLength: 50}} size='small'/>
 
         <TextField label='Email' name='email' value={formData.email}
@@ -241,7 +326,7 @@ const UserForm: FC<UserProps> = (props) => {
 
         <FormControl fullWidth>
           <InputLabel>State</InputLabel>
-            <Select
+            <Select sx = {{marginBottom:'1em'}}
                   name = "state"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"

@@ -5,6 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import axios from 'axios'
 import DialogComponent from './Dialog'
 import {DialogContext} from './DialogContext'
+import DrawerAppBar from './DrawerAppBar'
 
 
 interface FormData {
@@ -15,13 +16,8 @@ interface FormData {
   state: string
 }
 
-const drawerWidth = 240;
-const navItems = ['Home', 'Form','Table', 'Grid'];
-
-
 
 interface Props {
-  window ? : () =>  Window;
   URL : string
 }
 
@@ -33,19 +29,11 @@ const initialValues: FormData = {
   email: '',
   age: 0,
   state: '',
-//   state1: {
-//     prop1: '',
-//     prop2: '',
-//     prop3: ''
-//   }
 }
 
-interface UserProps{
-  window ? : () =>  Window;
-  URL : string
-}
 
-const UserForm: FC<UserProps> = (props) => {
+
+const UserForm: FC<Props> = (props) => {
 
   const [formData, setFormData] = useState<FormData>(initialValues)
   const formErrors: Partial<FormData> = {}
@@ -55,12 +43,6 @@ const UserForm: FC<UserProps> = (props) => {
   const [success, setSuccess] = useState<boolean>(false)
   const [state, setState] = useState<string>('');
 
-  const { window } = props;
-    const [mobileOpen, setMobileOpen] = React.useState(false);
-
-    const handleDrawerToggle = () => {
-      setMobileOpen((prevState) => !prevState);
-    };
 
   const handleOnSubmit = (event: FormEvent<HTMLFormElement>) =>{
     event.preventDefault()
@@ -195,89 +177,9 @@ const UserForm: FC<UserProps> = (props) => {
 
 //   console.log(formData.state)
 
-  const drawer = (
-       <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" sx={{ my: 2 }}>
-              MUI
-            </Typography>
-            <Divider />
-            <List>
-            <ListItem sx={{ textAlign: 'center' }}>
-              <Button sx={{ textAlign: 'center' }} size='small'  href='/'>home</Button>
-            </ListItem>
-            <ListItem>
-              <Button sx={{ textAlign: 'center' }} size='small'  href='/user-form'>form</Button>
-            </ListItem>
-
-            <ListItem>
-              <Button size='small'  href='/user-table'>table</Button>
-            </ListItem>
-            <ListItem>
-              <Button size='small'  href='/grid-card-form'>Grid</Button>
-            </ListItem>
-            </List>
-       </Box>
-  );
-
-  const container = window !== undefined ? () => window().document.body : undefined;
-
 
   return (
   <div style={{margin: '2em'}}>
-    <Box sx={{ display: 'flex' }}>
-           <CssBaseline />
-              <AppBar component="nav">
-                <Toolbar>
-                  <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    edge="start"
-                    onClick={handleDrawerToggle}
-                    sx={{ mr: 2, display: { sm: 'none' } }}
-                  >
-                    <MenuIcon />
-                  </IconButton>
-                  <Typography
-                              variant="h6"
-                              component="div"
-                              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-                  >
-                  MUI
-                  </Typography>
-                  <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                     <Button sx={{ color: '#fff' }}  href='/' >Home</Button>
-                     <Button sx={{ color: '#fff' }}  href='/user-form' >Form</Button>
-                     <Button sx={{ color: '#fff' }}  href='/user-table' >Table</Button>
-                     <Button sx={{ color: '#fff' }}  href='/grid-card-form' >Grid</Button>
-
-  {/*                             {navItems.map((item) => ( */}
-  {/*                   <Button key={item} sx={{ color: '#fff' }}> */}
-  {/*                                 {item} */}
-  {/*                   </Button>
-                  ))}*/}
-                  </Box>
-                </Toolbar>
-              </AppBar>
-              <Box component="nav">
-                <Drawer
-                  container={container}
-                  variant="temporary"
-                  open={mobileOpen}
-                  onClose={handleDrawerToggle}
-                  ModalProps={{
-                  keepMounted: true, // Better open performance on mobile.
-                 }}
-                 sx={{
-                    display: { xs: 'block', sm: 'none' },
-                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                 }}
-                >
-                 {drawer}
-                </Drawer>
-              </Box>
-  </Box>
-
-
 
       <form onSubmit={handleOnSubmit} style={{maxWidth: '50em'}}>
         <Typography variant='h5' style={{letterSpacing: '0.1em'}}>USER FORM</Typography>
@@ -304,25 +206,7 @@ const UserForm: FC<UserProps> = (props) => {
         onChange={handleOnChange} error={!!errors.age} helperText={errors.age}
         fullWidth margin='normal' inputProps={{maxLength: 3}} size='small'/>
 
-         {/*<TextField label='Aadhaar' name='Aadhaar' value={formData.state}
-//         onChange={handleOnChange} error={!!errors.state} helperText={errors.state}
-//         fullWidth margin='normal' inputProps={{maxLength: 50}} size='small'/>
-//
-//         <TextField label='prop1' name='prop1' value={formData.state1.prop1 ?? ''}
-//         onChange={handleOnChange} error={!!errors.state1?.prop1} helperText={errors.state1?.prop1}
-//         fullWidth margin='normal' inputProps={{maxLength: 50}} size='small'/>
 
-
-//          <label>Selected State: {selectedState}
-//
-//          <select style={{margin:20}} id="state" value={selectedState} onChange={handleSelectChange}>
-//            <option value=" ">Select a state</option>
-//              {stateList.map((state) => (
-//                <option key={state} value={state}>
-//                  {state}
-//              </option>
-//           ))}
-//          </select></label>*/}
 
         <FormControl fullWidth>
           <InputLabel>State</InputLabel>

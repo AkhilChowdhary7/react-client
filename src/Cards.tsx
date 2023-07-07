@@ -5,14 +5,11 @@ import{useTheme} from '@mui/material/styles'
 import {CustomCardContent, CustomCard, Container} from './ComponentRepository'
 import GridCard from './GridCard';
 import GridCardForm from './GridCardForm'
-
-const drawerWidth = 240;
-const navItems = ['Home', 'Form','Table', 'Grid'];
+import DrawerAppBar from './DrawerAppBar'
 
 
 
 interface Props {
-  window ? : () =>  Window;
   URL : string
 }
 
@@ -22,107 +19,18 @@ const Cards:FC<Props> = (props) => {
   const isMdScreen = useMediaQuery(theme.breakpoints.between('md', 'lg'))
   const isLgScreen = useMediaQuery(theme.breakpoints.up('lg'))
 
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
-  };
-
-  const drawer = (
-     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-          <Typography variant="h6" sx={{ my: 2 }}>
-            MUI
-          </Typography>
-          <Divider />
-          <List>
-          <ListItem sx={{ textAlign: 'center' }}>
-            <Button sx={{ textAlign: 'center' }} size='small'  href='/'>home</Button>
-          </ListItem>
-          <ListItem>
-            <Button sx={{ textAlign: 'center' }} size='small'  href='/user-form'>form</Button>
-          </ListItem>
-
-          <ListItem>
-            <Button size='small'  href='/user-table'>table</Button>
-          </ListItem>
-          <ListItem>
-            <Button size='small'  href='/grid-card-form'>Grid</Button>
-          </ListItem>
-          </List>
-
-{/*           <List> */}
-{/*             {navItems.map((item) => ( */}
-{/*               <ListItem key={item} disablePadding> */}
-{/*                 <ListItemButton sx={{ textAlign: 'center' }}> */}
-{/*                   <ListItemText primary={item} /> */}
-{/*                 </ListItemButton> */}
-{/*               </ListItem> */}
-{/*           ))} */}
-{/*           </List> */}
-        </Box>
-      );
-
-      const container = window !== undefined ? () => window().document.body : undefined;
-
 
   return (
+  <>
     <Container>
 
       <Box sx={{ display: 'flex' }}>
          <CssBaseline />
-            <AppBar component="nav">
-              <Toolbar>
-                <IconButton
-                  color="inherit"
-                  aria-label="open drawer"
-                  edge="start"
-                  onClick={handleDrawerToggle}
-                  sx={{ mr: 2, display: { sm: 'none' } }}
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Typography
-                            variant="h6"
-                            component="div"
-                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-                >
-                MUI
-                </Typography>
-                <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                   <Button sx={{ color: '#fff' }}  href='/' >Home</Button>
-                   <Button sx={{ color: '#fff' }}  href='/user-form' >Form</Button>
-                   <Button sx={{ color: '#fff' }}  href='/user-table' >Table</Button>
-                   <Button sx={{ color: '#fff' }}  href='/grid-card-form' >Grid</Button>
 
-{/*                             {navItems.map((item) => ( */}
-{/*                   <Button key={item} sx={{ color: '#fff' }}> */}
-{/*                                 {item} */}
-{/*                   </Button>
-                ))}*/}
-                </Box>
-              </Toolbar>
-            </AppBar>
-            <Box component="nav">
-              <Drawer
-                container={container}
-                variant="temporary"
-                open={mobileOpen}
-                onClose={handleDrawerToggle}
-                ModalProps={{
-                keepMounted: true, // Better open performance on mobile.
-               }}
-               sx={{
-                  display: { xs: 'block', sm: 'none' },
-                  '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-               }}
-              >
-               {drawer}
-              </Drawer>
-            </Box>
+
             <Box component="main" sx={{ p: 3 }}>
               <Toolbar />
-              <Grid container justifyContent='flex-start' spacing='2em'>
+              <Grid container justifyContent='flex-start' spacing='2em' direction={isSmScreen ? 'column-reverse' : 'row'} >
               <Grid item sx= {{flexGrow: 1 , flexBasis: '25%'}}>
 
               <Typography>
@@ -199,6 +107,7 @@ const Cards:FC<Props> = (props) => {
 
 
     </Container>
+    </>
   )
 
 }

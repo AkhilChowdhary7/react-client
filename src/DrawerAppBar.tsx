@@ -7,8 +7,6 @@ import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -23,7 +21,7 @@ interface Props {
 }
 
 const drawerWidth = 240;
-const navItems = ['Home', 'Form','Table', 'Grid'];
+
 const currentPage = window.location.pathname;
 
 export default function DrawerAppBar(props: Props) {
@@ -61,9 +59,9 @@ export default function DrawerAppBar(props: Props) {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column'}}>
       <CssBaseline />
-      <AppBar component="nav">
+      <AppBar component="nav" sx ={{ position : ' relative' , zIndex : 1201}}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -89,7 +87,7 @@ export default function DrawerAppBar(props: Props) {
           </Box>
         </Toolbar>
       </AppBar>
-      <Box component="nav">
+      <Box component="nav" >
       <Drawer
                 container={container}
                 variant="temporary"
@@ -100,7 +98,7 @@ export default function DrawerAppBar(props: Props) {
                 }}
                 sx={{
                   display: { xs: 'block', md: 'none' },
-                  '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                  '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, position : 'relative', zIndex:1100},
                 }}
               >
                 {drawer}

@@ -2,7 +2,6 @@ import React, {FC} from 'react';
 import {Button, Grid,useMediaQuery } from '@mui/material';
 import GridCard from './GridCard';
 import{useTheme} from '@mui/material/styles'
-import DrawerAppBar from './DrawerAppBar'
 
 
 
@@ -22,7 +21,7 @@ const theme = useTheme()
          <h2>1st row</h2>
        </Grid>
        <Grid item sx = {{flexGrow: 1 , fontSize :isMdScreen ? '24px' : '14px'}} >
-         <GridCard title="" content="First row, first card" number={1}  />
+         <GridCard title="" content="First row, first card" number={1} />
        </Grid>
        <Grid item sx = {{flexGrow: 1 }}>
          <GridCard title="hsgvd" content="First row, second card" number={2} />

@@ -23,39 +23,38 @@ const Cards:FC<Props> = (props) => {
   return (
   <>
     <Container>
+      <Grid container justifyContent='flex-start' spacing='2em'>
 
-      <Box sx={{ display: 'flex' }}>
          <CssBaseline />
 
+            <Toolbar />
+              <Grid item >
+                <Grid container justifyContent='flex-start' spacing='2em' direction={isSmScreen ? 'column-reverse' : 'row'} >
+                  <Grid item sx= {{flexGrow: 1 , flexBasis: '25%'}}>
 
-            <Box component="main" sx={{ p: 3 }}>
-              <Toolbar />
-              <Grid container justifyContent='flex-start' spacing='2em' direction={isSmScreen ? 'column-reverse' : 'row'} >
-              <Grid item sx= {{flexGrow: 1 , flexBasis: '25%'}}>
+                    <Typography>
+                                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique unde
+                                  fugit veniam eius, perspiciatis sunt? Corporis qui ducimus quibusdam,
+                                  aliquam dolore excepturi quae. Distinctio enim at eligendi perferendis in
+                                  cum quibusdam sed quae, accusantium et aperiam? Quod itaque exercitationem,
+                                  at ab sequi qui modi delectus quia corrupti alias distinctio nostrum.
+                                  Minima ex dolor modi inventory sapiente necessitatibus aliquam fuga et.
+                    </Typography>
 
-              <Typography>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique unde
-              fugit veniam eius, perspiciatis sunt? Corporis qui ducimus quibusdam,
-              aliquam dolore excepturi quae. Distinctio enim at eligendi perferendis in
-              cum quibusdam sed quae, accusantium et aperiam? Quod itaque exercitationem,
-              at ab sequi qui modi delectus quia corrupti alias distinctio nostrum.
-              Minima ex dolor modi inventore sapiente necessitatibus aliquam fuga et.
-              </Typography>
+                  </Grid>
 
+                  <Grid item sx= {{flexGrow: 1 , flexBasis: '25%'}}>
+
+                    <img src ="/fireworks1.jpg" alt = 'img'/>
+
+                  </Grid>
+                </Grid>
               </Grid>
 
-              <Grid item sx= {{flexGrow: 1 , flexBasis: '25%'}}>
-
-                <img src ="/fireworks1.jpg" alt = 'img'/>
-
-              </Grid>
-              </Grid>
-            </Box>
-      </Box>
 
 
 
-
+      <Grid item  sx= {{flexGrow: 1 , flexBasis: '25%'}}>
       <Grid container justifyContent='flex-start' spacing={isMdScreen ? 2 : 4}
                                         direction={isSmScreen ? 'column' : 'row'}>
         <Grid item sx= {{flexGrow: 1 , flexBasis: '25%'}}>
@@ -102,6 +101,8 @@ const Cards:FC<Props> = (props) => {
           </CustomCard>
         </Grid>
 
+      </Grid>
+      </Grid>
       </Grid>
 
 
